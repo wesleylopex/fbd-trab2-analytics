@@ -104,5 +104,5 @@ FROM results
 INNER JOIN drivers
 ON results.driverId = drivers.driverId
 WHERE results.statusId = 104 OR results.statusId = 3
-GROUP BY drivers
+GROUP BY drivers.nationality
 ORDER BY COUNT(results.resultId) DESC
