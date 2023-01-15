@@ -70,9 +70,9 @@ GROUP BY constructors.constructorId
 ORDER BY COUNT(results.resultId) DESC
 
 
--- Descricao da consulta: quais pilotos tiveram acidentes fatais, informando o nome do piloto, nome do circuito e país do circuito
+-- Descricao da consulta: quais pilotos tiveram acidentes (statusId = 104 OR status = 3), informando o nome do piloto, nome do circuito e país do circuito e data
 
-SELECT CONCAT(drivers.forename, ' ' , drivers.surname) AS driverName, circuits.name AS circuitName, circuits.country AS circuitCountry, status.status
+SELECT CONCAT(drivers.forename, ' ' , drivers.surname) AS driverName, circuits.name AS circuitName, circuits.country AS circuitCountry, status.status, races.date
 FROM results
 INNER JOIN drivers
 ON results.driverId = drivers.driverId
@@ -82,5 +82,27 @@ INNER JOIN circuits
 ON circuits.circuitId = races.circuitId
 INNER JOIN status
 ON status.statusId = results.statusId
-WHERE results.statusId = 104
+WHERE results.statusId = 104 OR results.statusId = 3
 ORDER BY drivers.driverId
+
+
+-- Descricao da consulta: quais pilotos que mais tiveram acidentes (statusId = 104 OR status = 3), informando o nome do piloto, numero de acidentes
+
+SELECT CONCAT(drivers.forename, ' ' , drivers.surname) AS driverName, COUNT(results.resultId) AS accidentsCount
+FROM results
+INNER JOIN drivers
+ON results.driverId = drivers.driverId
+WHERE results.statusId = 104 OR results.statusId = 3
+GROUP BY drivers.driverId
+ORDER BY COUNT(results.resultId) DESC
+
+
+-- Descricao da consulta: mais acidentes (statusId = 104 OR status = 3) por nacionalidade (drivers.nationality)
+
+SELECT drivers.nationality, COUNT(results.resultId) AS accidentsCount
+FROM results
+INNER JOIN drivers
+ON results.driverId = drivers.driverId
+WHERE results.statusId = 104 OR results.statusId = 3
+GROUP BY drivers
+ORDER BY COUNT(results.resultId) DESC
