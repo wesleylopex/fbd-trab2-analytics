@@ -22,7 +22,7 @@ FROM results
 INNER JOIN drivers
 ON results.driverId = drivers.driverId AND results.position = 1
 GROUP BY drivers.driverId
-ORDER BY COUNT(results.resultId) DESC
+ORDER BY COUNT(results.resultId) DESC;
 
 -- Descricao da consulta: quais pilotos mais ficaram no pódio
 
@@ -31,7 +31,7 @@ FROM results
 INNER JOIN drivers
 ON results.driverId = drivers.driverId AND results.position <= 3
 GROUP BY drivers.driverId
-ORDER BY COUNT(results.resultId) DESC
+ORDER BY COUNT(results.resultId) DESC;
 
 
 -- Descricao da consulta: quais pilotos mais largaram em primeiro
@@ -41,7 +41,7 @@ FROM qualifying
 INNER JOIN drivers
 ON qualifying.driverId = drivers.driverId AND qualifying.position = 1
 GROUP BY drivers.driverId
-ORDER BY COUNT(qualifying.qualifyId) DESC
+ORDER BY COUNT(qualifying.qualifyId) DESC;
 
 
 -- Descricao da consulta: quais pilotos nunca largaram em primeiro
@@ -49,7 +49,7 @@ ORDER BY COUNT(qualifying.qualifyId) DESC
 SELECT CONCAT(drivers.forename, ' ' , drivers.surname)
 FROM drivers
 WHERE drivers.driverId NOT IN (SELECT qualifying.driverId FROM qualifying WHERE qualifying.position = 1)
-ORDER BY drivers.driverId
+ORDER BY drivers.driverId;
 
 
 -- Descricao da consulta: quais pilotos nunca correram uma corrida
@@ -57,7 +57,7 @@ ORDER BY drivers.driverId
 SELECT CONCAT(drivers.forename, ' ' , drivers.surname)
 FROM drivers
 WHERE drivers.driverId NOT IN (SELECT results.driverId FROM results)
-ORDER BY drivers.driverId
+ORDER BY drivers.driverId;
 
 
 -- Descricao da consulta: quais construtores mais ganharam corridas
@@ -67,7 +67,7 @@ FROM results
 INNER JOIN constructors
 ON results.constructorId = constructors.constructorId AND results.position = 1
 GROUP BY constructors.constructorId
-ORDER BY COUNT(results.resultId) DESC
+ORDER BY COUNT(results.resultId) DESC;
 
 
 -- Descricao da consulta: quais pilotos tiveram acidentes (statusId = 104 OR status = 3), informando o nome do piloto, nome do circuito e país do circuito e data
@@ -83,7 +83,7 @@ ON circuits.circuitId = races.circuitId
 INNER JOIN status
 ON status.statusId = results.statusId
 WHERE results.statusId = 104 OR results.statusId = 3
-ORDER BY drivers.driverId
+ORDER BY drivers.driverId;
 
 
 -- Descricao da consulta: quais pilotos que mais tiveram acidentes (statusId = 104 OR status = 3), informando o nome do piloto, numero de acidentes
@@ -94,7 +94,7 @@ INNER JOIN drivers
 ON results.driverId = drivers.driverId
 WHERE results.statusId = 104 OR results.statusId = 3
 GROUP BY drivers.driverId
-ORDER BY COUNT(results.resultId) DESC
+ORDER BY COUNT(results.resultId) DESC;
 
 
 -- Descricao da consulta: mais acidentes (statusId = 104 OR status = 3) por nacionalidade (drivers.nationality)
@@ -105,4 +105,4 @@ INNER JOIN drivers
 ON results.driverId = drivers.driverId
 WHERE results.statusId = 104 OR results.statusId = 3
 GROUP BY drivers.nationality
-ORDER BY COUNT(results.resultId) DESC
+ORDER BY COUNT(results.resultId) DESC;
